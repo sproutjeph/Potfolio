@@ -1,0 +1,104 @@
+---
+import MobileNav from '@/components/MobileNav.tsx';
+import AvailabilityPill from '@/components/AvailabilityPill.tsx';
+import ThemeToggle from '@/components/ThemeToggle.tsx';
+
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-40 transition-[background,backdrop-filter,border-color] duration-300"
+  data-scrolled="false"
+>
+  <div class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-5 md:px-10 md:py-6">
+    {/* Logo */}
+    <a
+      href="/"
+      class="font-display text-[1.4rem] leading-none tracking-[-0.04em] text-foreground transition-opacity hover:opacity-70"
+    >
+      JEPHTHAH.
+    </a>
+
+    {/* Desktop nav (centered, absolute) */}
+    <nav
+      class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 md:flex"
+      aria-label="Primary"
+    >
+      {
+        links.map((link) => {
+          const active =
+            pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+          return (
+            <a
+              href={link.href}
+              class:list={[
+                'eyebrow relative py-2 text-foreground transition-opacity',
+                active ? 'opacity-100' : 'opacity-50 hover:opacity-100',
+              ]}
+              data-astro-nav
+              data-active={active}
+            >
+              {link.label}
+              {active && (
+                <span
+                  class="absolute -bottom-0.5 left-0 h-px w-full"
+                  style="background: var(--foreground)"
+                />
+              )}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    {/* Right cluster */}
+    <div class="flex items-center gap-3 md:gap-4">
+      <AvailabilityPill client:load />
+      <ThemeToggle client:load />
+      <div class="md:hidden">
+        <MobileNav client:load links={links} pathname={pathname} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  function bindHeader() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+
+    function update() {
+      const scrolled = window.scrollY > 24;
+      header?.setAttribute('data-scrolled', String(scrolled));
+      if (scrolled) {
+        header?.classList.add(
+          'bg-background/80',
+          'backdrop-blur-md',
+          'border-b',
+          'border-border'
+        );
+      } else {
+        header?.classList.remove(
+          'bg-background/80',
+          'backdrop-blur-md',
+          'border-b',
+          'border-border'
+        );
+      }
+    }
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+
+  bindHeader();
+  document.addEventListener('astro:page-load', bindHeader);
+</script>

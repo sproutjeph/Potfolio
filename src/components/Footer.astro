@@ -1,0 +1,47 @@
+---
+const year = new Date().getFullYear();
+
+const socials = [
+  { href: 'https://github.com/Jephthahmbah', label: 'Github' },
+  { href: 'https://x.com/jephthahmbah', label: 'X' },
+  { href: 'https://linkedin.com/in/jephthahmbah', label: 'LinkedIn' },
+];
+---
+
+<footer class="border-t border-border mt-24">
+  <div
+    class="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between md:px-10"
+  >
+    <p
+      class="font-display text-base tracking-[-0.04em] text-foreground"
+    >
+      JEPHTHAH. <span class="text-muted-foreground">© {year}</span>
+    </p>
+
+    <a
+      href="/jephthah-cv.pdf"
+      download
+      class="eyebrow inline-flex items-center gap-2 text-foreground transition-opacity hover:opacity-70"
+    >
+      Download CV
+      <span aria-hidden="true">↓</span>
+    </a>
+
+    <ul class="flex items-center gap-6">
+      {
+        socials.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="eyebrow text-muted-foreground transition-colors hover:text-foreground"
+            >
+              {s.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>

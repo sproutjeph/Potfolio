@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
+---
+
+<BaseLayout title="Blog — Jephthah" description="Writing.">
+  <section class="mx-auto max-w-3xl px-6 pt-16 pb-24">
+    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Blog</h1>
+
+    {
+      posts.length === 0 ? (
+        <div class="mt-12 rounded-2xl border border-dashed border-border p-12 text-center">
+          <h2 class="text-xl font-medium">Writing soon</h2>
+          <p class="mt-2 text-muted-foreground">
+            First post is in the oven. Check back later.
+          </p>
+        </div>
+      ) : (
+        <ul class="mt-12 space-y-8">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}`} class="group block">
+                <h2 class="text-2xl font-semibold tracking-tight group-hover:underline">
+                  {post.data.title}
+                </h2>
+                <p class="mt-2 text-muted-foreground">{post.data.description}</p>
+                <p class="mt-2 text-sm text-muted-foreground">
+                  {post.data.pubDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>

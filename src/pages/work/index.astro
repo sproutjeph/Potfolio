@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectGrid from '@/components/ProjectGrid.astro';
+
+const projects = await getCollection('projects');
+---
+
+<BaseLayout title="Projects — Jephthah" description="Things I'm building.">
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-24">
+    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Projects</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
+      What I'm working on now, what's shipping next, and what's still on the back burner.
+    </p>
+
+    <div class="mt-12">
+      <ProjectGrid projects={projects} />
+    </div>
+  </section>
+</BaseLayout>

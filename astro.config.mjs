@@ -9,9 +9,11 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://jephthah.dev',
+
   vite: {
-      plugins: [tailwindcss()],
-	},
+    plugins: [tailwindcss()],
+  },
 
   integrations: [react(), mdx(), sitemap()],
 });

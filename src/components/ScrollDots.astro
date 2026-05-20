@@ -1,0 +1,85 @@
+---
+const sections = [
+  { id: 'hero', label: 'Hero' },
+  { id: 'work', label: 'Selected work' },
+  { id: 'stats', label: 'Stats' },
+  { id: 'about', label: 'About' },
+  { id: 'capabilities', label: 'Capabilities' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+
+<nav
+  class="fixed right-6 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-4 lg:flex"
+  aria-label="Section progress"
+  data-scroll-dots
+>
+  {
+    sections.map((s) => (
+      <a
+        href={`#${s.id}`}
+        class="group relative flex items-center justify-end"
+        data-scroll-dot
+        data-target={s.id}
+        aria-label={`Jump to ${s.label}`}
+      >
+        <span
+          class="eyebrow absolute right-6 whitespace-nowrap text-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        >
+          {s.label}
+        </span>
+        <span
+          class="block h-2 w-2 rounded-full border border-foreground/30 transition-all duration-300"
+          data-dot-indicator
+        />
+      </a>
+    ))
+  }
+</nav>
+
+<script>
+  function bindScrollDots() {
+    const dots = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('[data-scroll-dot]')
+    );
+    if (dots.length === 0) return;
+
+    const observers: IntersectionObserver[] = [];
+
+    dots.forEach((dot) => {
+      const targetId = dot.dataset.target;
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const indicator = dot.querySelector<HTMLElement>('[data-dot-indicator]');
+          if (!indicator) return;
+          if (entry.isIntersecting && entry.intersectionRatio > 0.45) {
+            indicator.style.background = 'var(--accent)';
+            indicator.style.borderColor = 'var(--accent)';
+            indicator.style.transform = 'scale(1.6)';
+          } else {
+            indicator.style.background = 'transparent';
+            indicator.style.borderColor = '';
+            indicator.style.transform = 'scale(1)';
+          }
+        },
+        { threshold: [0, 0.45, 0.9], rootMargin: '-20% 0px -20% 0px' }
+      );
+
+      observer.observe(target);
+      observers.push(observer);
+    });
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => observers.forEach((o) => o.disconnect()),
+      { once: true }
+    );
+  }
+
+  bindScrollDots();
+  document.addEventListener('astro:page-load', bindScrollDots);
+</script>

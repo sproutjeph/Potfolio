@@ -1,0 +1,37 @@
+---
+// Initializes Lenis + syncs GSAP ScrollTrigger to it.
+// Survives Astro View Transitions by re-binding on astro:page-load.
+---
+
+<script>
+  import { initLenis, destroyLenis, getLenis } from '@/lib/lenis';
+  import { registerGsap, ScrollTrigger, gsap } from '@/lib/gsap';
+
+  function setup() {
+    registerGsap();
+    const lenis = initLenis();
+    if (!lenis) {
+      // Reduced motion: native scroll, no ScrollTrigger sync needed beyond defaults
+      ScrollTrigger.refresh();
+      return;
+    }
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    ScrollTrigger.refresh();
+  }
+
+  function teardown() {
+    destroyLenis();
+    ScrollTrigger.getAll().forEach((st) => st.kill());
+  }
+
+  setup();
+
+  document.addEventListener('astro:before-swap', teardown);
+  document.addEventListener('astro:page-load', setup);
+</script>

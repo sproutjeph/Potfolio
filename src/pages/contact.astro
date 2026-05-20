@@ -1,0 +1,34 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+---
+
+<BaseLayout title="Contact — Jephthah" description="Get in touch.">
+  <section class="mx-auto max-w-2xl px-6 pt-16 pb-24">
+    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Contact</h1>
+    <p class="mt-4 text-lg text-muted-foreground">
+      Send a note. I'll get back when I can.
+    </p>
+
+    <form class="mt-10 space-y-5">
+      <div class="space-y-2">
+        <label for="name" class="text-sm font-medium">Name</label>
+        <Input id="name" name="name" type="text" placeholder="Your name" required />
+      </div>
+
+      <div class="space-y-2">
+        <label for="email" class="text-sm font-medium">Email</label>
+        <Input id="email" name="email" type="email" placeholder="you@example.com" required />
+      </div>
+
+      <div class="space-y-2">
+        <label for="message" class="text-sm font-medium">Message</label>
+        <Textarea id="message" name="message" placeholder="What's on your mind?" rows={6} required />
+      </div>
+
+      <Button type="submit" size="lg">Send message</Button>
+    </form>
+  </section>
+</BaseLayout>

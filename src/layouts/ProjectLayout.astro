@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    stack: string[];
+    status: 'live' | 'in-progress' | 'concept';
+    repo?: string;
+    demo?: string;
+    pubDate: Date | string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const statusLabel: Record<Props['frontmatter']['status'], string> = {
+  live: 'Live',
+  'in-progress': 'In progress',
+  concept: 'Concept',
+};
+---
+
+<BaseLayout title={`${frontmatter.title} — Jephthah`} description={frontmatter.description}>
+  <article class="mx-auto max-w-3xl px-6 pt-16 pb-24">
+    <a href="/work" class="eyebrow text-muted-foreground transition-colors hover:text-foreground">
+      ← All work
+    </a>
+
+    <header class="mt-6">
+      <div class="flex items-center gap-3">
+        <h1 class="text-3xl font-semibold tracking-tight md:text-4xl">
+          {frontmatter.title}
+        </h1>
+        <Badge variant="secondary">{statusLabel[frontmatter.status]}</Badge>
+      </div>
+      <p class="mt-4 text-lg text-muted-foreground">{frontmatter.description}</p>
+
+      <ul class="mt-6 flex flex-wrap gap-1.5">
+        {frontmatter.stack.map((tech) => (
+          <li class="rounded-md border border-border/60 px-2 py-0.5 text-xs text-muted-foreground">
+            {tech}
+          </li>
+        ))}
+      </ul>
+
+      {(frontmatter.repo || frontmatter.demo) && (
+        <div class="mt-6 flex gap-4 text-sm">
+          {frontmatter.demo && (
+            <a href={frontmatter.demo} class="underline underline-offset-4">Live demo</a>
+          )}
+          {frontmatter.repo && (
+            <a href={frontmatter.repo} class="underline underline-offset-4">Source</a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <Separator className="my-10" />
+
+    <div class="prose prose-neutral max-w-none dark:prose-invert">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
