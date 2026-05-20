@@ -2,22 +2,96 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="About — Jephthah" description="About Jephthah.">
-  <section class="mx-auto max-w-3xl px-6 pt-16 pb-24">
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">About</h1>
-    <p class="mt-6 text-lg text-muted-foreground">
-      Short bio placeholder. Long-form coming later.
-    </p>
+<BaseLayout
+  title="About — Jephthah"
+  description="Jephthah — founder-engineer in Abuja, building AI-native products solo."
+>
+  <section class="relative pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+      <span class="eyebrow text-muted-foreground">ABOUT / 2026</span>
+      <h1
+        class="font-display mt-6 max-w-5xl text-foreground"
+        style="font-size: clamp(2.75rem, 9vw, 9rem); letter-spacing: -0.045em; line-height: 0.9;"
+      >
+        Founder-engineer.<br />
+        <span style="color: var(--accent)">Abuja</span>, working globally.
+      </h1>
+    </div>
+  </section>
 
-    <div class="mt-12 space-y-6 text-base leading-relaxed">
-      <p>
-        I'm Jephthah — a builder focused on AI-native products for students, founders,
-        and autonomous agents.
-      </p>
-      <p>
-        This page is intentionally sparse for now. Real copy lands here once the rest of
-        the site is solid.
-      </p>
+  <section class="relative border-t border-border pt-16 pb-24 md:pt-24 md:pb-32">
+    <div class="mx-auto grid w-full max-w-[1440px] grid-cols-12 gap-x-6 px-6 md:gap-x-10 md:px-10">
+      {/* Side rail */}
+      <aside class="col-span-12 md:col-span-3">
+        <dl class="space-y-8 md:sticky md:top-32">
+          <div>
+            <dt class="eyebrow text-muted-foreground">Currently</dt>
+            <dd class="mt-2 text-foreground">Abuja, Nigeria</dd>
+          </div>
+          <div>
+            <dt class="eyebrow text-muted-foreground">Building</dt>
+            <dd class="mt-2 space-y-1 text-foreground">
+              <div>DeeepSolve</div>
+              <div>TrackQR</div>
+              <div>ComplyNG</div>
+            </dd>
+          </div>
+          <div>
+            <dt class="eyebrow text-muted-foreground">Available for</dt>
+            <dd class="mt-2 text-foreground">
+              Founder-engineer roles,<br />AI-native product builds,<br />serious collaboration.
+            </dd>
+          </div>
+          <div>
+            <dt class="eyebrow text-muted-foreground">CV</dt>
+            <dd class="mt-2">
+              <a
+                href="/jephthah-cv.pdf"
+                download
+                class="eyebrow inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-foreground transition-colors hover:border-foreground"
+              >
+                Download
+                <span aria-hidden="true">↓</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </aside>
+
+      {/* Body column */}
+      <article
+        class="col-span-12 mt-12 max-w-[65ch] text-lg leading-relaxed text-foreground md:col-span-8 md:col-start-5 md:mt-0 md:text-xl"
+      >
+        <p>
+          I design, build, deploy, and operate software end-to-end. Most of what I ship is
+          AI-native — products where the model is part of the runtime, not a bolt-on.
+        </p>
+
+        <p class="mt-8">
+          I work solo because the products I want to ship don't exist yet, and waiting for
+          someone else to build them isn't a plan. Four products live: <a
+            href="/work/deeepsolve"
+            class="border-b border-foreground/30 hover:border-foreground">DeeepSolve</a
+          > (50K+ Nigerian students), <a
+            href="/work/track-qr"
+            class="border-b border-foreground/30 hover:border-foreground">TrackQR</a
+          > (1M+ scans served), <a
+            href="/work/complyng"
+            class="border-b border-foreground/30 hover:border-foreground">ComplyNG</a
+          > (continuous compliance for Nigerian startups), and <a
+            href="/work/incented"
+            class="border-b border-foreground/30 hover:border-foreground">Incented</a
+          > (Web3 coordination infrastructure).
+        </p>
+
+        {/* TODO: Jephthah to fill — long-form bio, journey, what I'm building toward */}
+        <p
+          class="mt-8 rounded-md border border-dashed border-border bg-muted/30 px-4 py-3 text-sm text-muted-foreground"
+        >
+          [Placeholder] More long-form to come here — the journey, the bet on Africa, what
+          I'm building toward. Drop the copy in <code>src/pages/about.astro</code>.
+        </p>
+      </article>
     </div>
   </section>
 </BaseLayout>

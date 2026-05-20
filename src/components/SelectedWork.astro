@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '@/components/ProjectCard.astro';
+
+const projects = await getCollection('projects');
+const featured = projects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section
+  id="work"
+  class="relative scroll-mt-24 pt-24 md:pt-32"
+  data-section="work"
+>
+  <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+    <header class="mb-12 flex items-end justify-between gap-6 md:mb-16">
+      <div>
+        <span class="eyebrow text-muted-foreground" data-anim-section>
+          SELECTED WORK / 2025—2026
+        </span>
+        <h2
+          class="font-display mt-6 text-foreground"
+          style="font-size: clamp(2.5rem, 6vw, 5.5rem); letter-spacing: -0.04em; line-height: 0.9;"
+          data-anim-section-heading
+        >
+          Things I've shipped.
+        </h2>
+      </div>
+      <a
+        href="/work"
+        class="eyebrow hidden items-center gap-2 text-foreground transition-opacity hover:opacity-70 md:inline-flex"
+      >
+        All work
+        <span aria-hidden="true">→</span>
+      </a>
+    </header>
+  </div>
+
+  <div data-project-list>
+    {featured.map((project, i) => (
+      <ProjectCard project={project} index={i + 1} />
+    ))}
+  </div>
+</section>
+
+<script>
+  import { gsap, registerGsap, prefersReducedMotion, splitWords, ScrollTrigger } from '@/lib/gsap';
+
+  function bindSelectedWork() {
+    registerGsap();
+    if (prefersReducedMotion()) return;
+
+    // Section eyebrow + heading
+    const sec = document.querySelector('[data-section="work"]');
+    if (!sec) return;
+
+    const eyebrow = sec.querySelector('[data-anim-section]');
+    const heading = sec.querySelector<HTMLElement>('[data-anim-section-heading]');
+
+    if (heading) {
+      const split = splitWords(heading);
+      gsap.fromTo(
+        split.words,
+        { yPercent: 100, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.04,
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 85%',
+            once: true,
+          },
+        }
+      );
+    }
+
+    if (eyebrow) {
+      gsap.fromTo(
+        eyebrow,
+        { y: 8, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          scrollTrigger: { trigger: eyebrow, start: 'top 90%', once: true },
+        }
+      );
+    }
+
+    // Stagger project rows
+    const rows = sec.querySelectorAll('[data-project-row]');
+    rows.forEach((row, i) => {
+      gsap.fromTo(
+        row,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: 'power3.out',
+          delay: i * 0.06,
+          scrollTrigger: { trigger: row, start: 'top 88%', once: true },
+        }
+      );
+    });
+  }
+
+  bindSelectedWork();
+  document.addEventListener('astro:page-load', bindSelectedWork);
+</script>

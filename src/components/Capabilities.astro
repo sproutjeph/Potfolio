@@ -1,0 +1,99 @@
+---
+const capabilities = [
+  'Full-stack product engineering',
+  'AI agents · OpenAI Agents SDK',
+  'Python',
+  'Web3 · Solidity',
+  'Mobile · React Native',
+  'Backend systems · Go · Bun · Node',
+  'Postgres · Supabase · MongoDB',
+  'Design systems',
+];
+// Duplicate the track so the marquee loops seamlessly
+const track = [...capabilities, ...capabilities];
+---
+
+<section
+  id="capabilities"
+  class="relative scroll-mt-24 overflow-hidden border-t border-border py-24 md:py-32"
+  data-section="capabilities"
+>
+  <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+    <span class="eyebrow text-muted-foreground" data-anim-section>
+      CAPABILITIES
+    </span>
+    <h2
+      class="font-display mt-6 max-w-3xl text-foreground"
+      style="font-size: clamp(2rem, 5vw, 4.5rem); letter-spacing: -0.04em; line-height: 0.95;"
+      data-anim-section-heading
+    >
+      What I build with.
+    </h2>
+  </div>
+
+  <div class="mt-16 overflow-hidden" data-marquee-wrapper>
+    <ul class="flex w-max gap-4" data-marquee-track>
+      {
+        track.map((cap, i) => (
+          <li
+            class="eyebrow inline-flex shrink-0 items-center gap-3 rounded-full border border-border bg-background px-6 py-3 text-foreground"
+          >
+            {cap}
+            <span
+              class="inline-block h-1 w-1 rounded-full"
+              style="background: var(--accent)"
+              aria-hidden="true"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { gsap, registerGsap, prefersReducedMotion, splitWords } from '@/lib/gsap';
+
+  function bindCapabilities() {
+    registerGsap();
+    const sec = document.querySelector('[data-section="capabilities"]');
+    if (!sec) return;
+
+    const heading = sec.querySelector<HTMLElement>('[data-anim-section-heading]');
+    if (heading && !prefersReducedMotion()) {
+      const split = splitWords(heading);
+      gsap.fromTo(
+        split.words,
+        { yPercent: 100, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.04,
+          scrollTrigger: { trigger: heading, start: 'top 85%', once: true },
+        }
+      );
+    }
+
+    const track = sec.querySelector<HTMLElement>('[data-marquee-track]');
+    if (!track || prefersReducedMotion()) return;
+
+    // Calculate the width of one half of the track for seamless loop
+    const totalWidth = track.scrollWidth;
+    const halfWidth = totalWidth / 2;
+
+    const anim = gsap.to(track, {
+      x: -halfWidth,
+      duration: 35,
+      ease: 'none',
+      repeat: -1,
+    });
+
+    track.addEventListener('mouseenter', () => anim.timeScale(0.2));
+    track.addEventListener('mouseleave', () => anim.timeScale(1));
+  }
+
+  bindCapabilities();
+  document.addEventListener('astro:page-load', bindCapabilities);
+</script>

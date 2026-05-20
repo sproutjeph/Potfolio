@@ -2,11 +2,19 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import ScrollDots from '@/components/ScrollDots.astro';
+import SelectedWork from '@/components/SelectedWork.astro';
+import StatsStrip from '@/components/StatsStrip.astro';
+import AboutTeaser from '@/components/AboutTeaser.astro';
+import Capabilities from '@/components/Capabilities.astro';
+import ContactCTA from '@/components/ContactCTA.astro';
 ---
 
 <BaseLayout title="Jephthah — Founder & engineer · Abuja">
   <ScrollDots />
   <Hero />
-
-  {/* Phase 2 sections land here: SelectedWork, StatsStrip, AboutTeaser, Capabilities, ContactCTA */}
+  <SelectedWork />
+  <StatsStrip />
+  <AboutTeaser />
+  <Capabilities />
+  <ContactCTA />
 </BaseLayout>

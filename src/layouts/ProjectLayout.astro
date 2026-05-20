@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 
 interface Props {
   frontmatter: {
@@ -16,52 +14,116 @@ interface Props {
 }
 
 const { frontmatter } = Astro.props;
+
 const statusLabel: Record<Props['frontmatter']['status'], string> = {
-  live: 'Live',
-  'in-progress': 'In progress',
-  concept: 'Concept',
+  live: 'LIVE',
+  'in-progress': 'IN PROGRESS',
+  concept: 'CONCEPT',
 };
 ---
 
 <BaseLayout title={`${frontmatter.title} — Jephthah`} description={frontmatter.description}>
-  <article class="mx-auto max-w-3xl px-6 pt-16 pb-24">
-    <a href="/work" class="eyebrow text-muted-foreground transition-colors hover:text-foreground">
-      ← All work
-    </a>
+  <article class="relative pt-16 pb-24 md:pt-24 md:pb-32">
+    <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+      <a
+        href="/work"
+        class="eyebrow inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <span aria-hidden="true">←</span>
+        All work
+      </a>
 
-    <header class="mt-6">
-      <div class="flex items-center gap-3">
-        <h1 class="text-3xl font-semibold tracking-tight md:text-4xl">
+      <header class="mt-12 md:mt-16">
+        <div class="flex items-center gap-4">
+          <span
+            class="eyebrow inline-flex items-center gap-2"
+            style={{
+              color: frontmatter.status === 'live' ? 'var(--accent)' : 'var(--muted-foreground)',
+            }}
+          >
+            {frontmatter.status === 'live' && (
+              <span class="relative flex h-1.5 w-1.5">
+                <span
+                  class="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+                  style="background: var(--accent)"
+                />
+                <span
+                  class="relative inline-flex h-1.5 w-1.5 rounded-full"
+                  style="background: var(--accent)"
+                />
+              </span>
+            )}
+            {statusLabel[frontmatter.status]}
+          </span>
+        </div>
+
+        <h1
+          class="font-display mt-6 max-w-5xl text-foreground"
+          style="font-size: clamp(3rem, 8vw, 7rem); letter-spacing: -0.045em; line-height: 0.9;"
+        >
           {frontmatter.title}
         </h1>
-        <Badge variant="secondary">{statusLabel[frontmatter.status]}</Badge>
+        <p class="mt-8 max-w-3xl text-lg text-muted-foreground md:text-xl">
+          {frontmatter.description}
+        </p>
+
+        <ul class="mt-10 flex flex-wrap gap-2">
+          {frontmatter.stack.map((tech) => (
+            <li
+              class="eyebrow rounded-full border border-border px-3 py-1 text-muted-foreground"
+            >
+              {tech}
+            </li>
+          ))}
+        </ul>
+
+        {(frontmatter.repo || frontmatter.demo) && (
+          <div class="mt-10 flex flex-wrap items-center gap-6">
+            {frontmatter.demo && (
+              <a
+                href={frontmatter.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="eyebrow group inline-flex items-center gap-2 text-foreground transition-opacity hover:opacity-70"
+                style="color: var(--accent)"
+              >
+                Live demo
+                <span class="inline-block transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </a>
+            )}
+            {frontmatter.repo && (
+              <a
+                href={frontmatter.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="eyebrow group inline-flex items-center gap-2 text-foreground transition-opacity hover:opacity-70"
+              >
+                Source
+                <span class="inline-block transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </a>
+            )}
+          </div>
+        )}
+      </header>
+
+      <div class="mt-16 h-px w-full bg-border md:mt-24"></div>
+
+      <div
+        class="prose prose-neutral mt-12 max-w-[68ch] dark:prose-invert
+               prose-headings:font-display prose-headings:tracking-[-0.03em] prose-headings:font-black
+               prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
+               prose-h3:text-xl prose-h3:mt-8
+               prose-p:text-base prose-p:text-foreground md:prose-p:text-lg
+               prose-li:text-base md:prose-li:text-lg
+               prose-strong:text-foreground prose-strong:font-medium
+               prose-a:text-foreground prose-a:underline prose-a:underline-offset-4 prose-a:decoration-foreground/30 hover:prose-a:decoration-foreground"
+      >
+        <slot />
       </div>
-      <p class="mt-4 text-lg text-muted-foreground">{frontmatter.description}</p>
-
-      <ul class="mt-6 flex flex-wrap gap-1.5">
-        {frontmatter.stack.map((tech) => (
-          <li class="rounded-md border border-border/60 px-2 py-0.5 text-xs text-muted-foreground">
-            {tech}
-          </li>
-        ))}
-      </ul>
-
-      {(frontmatter.repo || frontmatter.demo) && (
-        <div class="mt-6 flex gap-4 text-sm">
-          {frontmatter.demo && (
-            <a href={frontmatter.demo} class="underline underline-offset-4">Live demo</a>
-          )}
-          {frontmatter.repo && (
-            <a href={frontmatter.repo} class="underline underline-offset-4">Source</a>
-          )}
-        </div>
-      )}
-    </header>
-
-    <Separator className="my-10" />
-
-    <div class="prose prose-neutral max-w-none dark:prose-invert">
-      <slot />
     </div>
   </article>
 </BaseLayout>

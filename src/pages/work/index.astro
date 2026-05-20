@@ -1,20 +1,35 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ProjectGrid from '@/components/ProjectGrid.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
 
 const projects = await getCollection('projects');
+const sorted = projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title="Projects — Jephthah" description="Things I'm building.">
-  <section class="mx-auto max-w-6xl px-6 pt-16 pb-24">
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Projects</h1>
-    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">
-      What I'm working on now, what's shipping next, and what's still on the back burner.
-    </p>
-
-    <div class="mt-12">
-      <ProjectGrid projects={projects} />
+<BaseLayout
+  title="Work — Jephthah"
+  description="Four products, shipped solo. DeeepSolve, TrackQR, ComplyNG, Incented."
+>
+  <section class="relative pt-24 pb-16 md:pt-32 md:pb-24">
+    <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+      <span class="eyebrow text-muted-foreground">WORK / 2025—2026</span>
+      <h1
+        class="font-display mt-6 max-w-4xl text-foreground"
+        style="font-size: clamp(2.75rem, 8vw, 8rem); letter-spacing: -0.045em; line-height: 0.9;"
+      >
+        Four products,<br />shipped solo<span style="color: var(--accent)">.</span>
+      </h1>
+      <p class="mt-8 max-w-2xl text-base text-muted-foreground md:text-lg">
+        Founder-engineer in Abuja. Each of these I designed, built, deployed, and operate
+        end-to-end — from rules engines to React Native to on-chain primitives.
+      </p>
     </div>
+  </section>
+
+  <section class="relative">
+    {sorted.map((project, i) => (
+      <ProjectCard project={project} index={i + 1} />
+    ))}
   </section>
 </BaseLayout>

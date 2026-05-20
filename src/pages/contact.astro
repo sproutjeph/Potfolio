@@ -1,34 +1,77 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
+const email = 'donjeph@gmail.com';
+
+const socials = [
+  { href: 'https://github.com/sproutjeph', label: 'Github' },
+  { href: 'https://x.com/jephthahmbah', label: 'X / Twitter' },
+  { href: 'https://linkedin.com/in/jephthahmbah', label: 'LinkedIn' },
+];
 ---
 
-<BaseLayout title="Contact — Jephthah" description="Get in touch.">
-  <section class="mx-auto max-w-2xl px-6 pt-16 pb-24">
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Contact</h1>
-    <p class="mt-4 text-lg text-muted-foreground">
-      Send a note. I'll get back when I can.
-    </p>
+<BaseLayout
+  title="Contact — Jephthah"
+  description="Get in touch. donjeph@gmail.com — based in Abuja, working globally."
+>
+  <section class="relative pt-24 pb-32 md:pt-32 md:pb-44">
+    <div class="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+      <span class="eyebrow text-muted-foreground">CONTACT / 2026</span>
+      <h1
+        class="font-display mt-6 max-w-5xl text-foreground"
+        style="font-size: clamp(3rem, 10vw, 10rem); letter-spacing: -0.045em; line-height: 0.88;"
+      >
+        Let's<br />talk<span style="color: var(--accent)">.</span>
+      </h1>
 
-    <form class="mt-10 space-y-5">
-      <div class="space-y-2">
-        <label for="name" class="text-sm font-medium">Name</label>
-        <Input id="name" name="name" type="text" placeholder="Your name" required />
+      <div class="mt-20 grid grid-cols-12 gap-x-6 gap-y-12 md:gap-x-10">
+        <div class="col-span-12 md:col-span-7">
+          <span class="eyebrow text-muted-foreground">Email</span>
+          <a
+            href={`mailto:${email}`}
+            class="font-display group mt-3 block text-foreground"
+            style="font-size: clamp(1.75rem, 4vw, 3.5rem); letter-spacing: -0.03em; line-height: 1;"
+          >
+            <span class="border-b border-foreground/0 transition-colors group-hover:border-foreground">
+              {email}
+            </span>
+          </a>
+          <p class="mt-8 max-w-prose text-base text-muted-foreground md:text-lg">
+            Currently in Abuja, working globally. Open to founder-engineer roles, AI-native
+            product builds, and serious collaboration.
+          </p>
+        </div>
+
+        <div class="col-span-12 md:col-span-5">
+          <span class="eyebrow text-muted-foreground">Elsewhere</span>
+          <ul class="mt-3 flex flex-col">
+            {
+              socials.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group flex items-center justify-between border-b border-border py-4 text-foreground transition-colors hover:border-foreground"
+                  >
+                    <span class="font-display text-xl tracking-[-0.03em] md:text-2xl">
+                      {s.label}
+                    </span>
+                    <span class="text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-12">
+            <span class="eyebrow text-muted-foreground">Time</span>
+            <p class="mt-3 text-foreground">West Africa Time (UTC+1)</p>
+          </div>
+        </div>
       </div>
-
-      <div class="space-y-2">
-        <label for="email" class="text-sm font-medium">Email</label>
-        <Input id="email" name="email" type="email" placeholder="you@example.com" required />
-      </div>
-
-      <div class="space-y-2">
-        <label for="message" class="text-sm font-medium">Message</label>
-        <Textarea id="message" name="message" placeholder="What's on your mind?" rows={6} required />
-      </div>
-
-      <Button type="submit" size="lg">Send message</Button>
-    </form>
+    </div>
   </section>
 </BaseLayout>
